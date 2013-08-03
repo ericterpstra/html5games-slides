@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HTML5 Game Development</title>
+<meta name="description" content="A presentation on getting started creating games on the web.">
+<meta name="author" content="Eric Terpstra">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="css/reveal.min.css">
+<link rel="stylesheet" href="css/theme/sky.css" id="theme">
+<link rel="stylesheet" href="css/style.css" >
+
+<!-- For syntax highlighting -->
+<link rel="stylesheet" href="lib/css/zenburn.css">
+<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+<script>
+document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+</script>
+<!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <br>
+            <h1>HTML5 Games</h1>
+            <div>
+                <br>
+            </div>
+            <div><img src="images/me.png" /></div>
+            <div>
+                <br>
+            </div>
+            <div>Eric Terpstra</div>
+            <div>@eterps</div>
+            <aside class='notes'>Hello, my name is Eric Terpstra. I'm a web developer working for SSI. Previously did Flash, now JS. Going to talk about that today.</aside>
+        </section>
+        <section>
+            <section class="questionSlide">
+                <h1>
+                    <font style="font-size: 112px;">WHAT&nbsp;</font>
+                    <span style="font-size: 112px;">IS an&nbsp;</span>
+                </h1>
+                <h1>
+                    <img src="images/HTML5_Logo_512.png" style="height: 295px;">
+                    <br>
+                </h1>
+                <h1>
+                    <font style="font-size: 112px;">game?</font>
+                </h1>
+            </section>
+            <section>
+                <h1 style="font-size:2.5em">A GAME THAT WILL RUN<br>
+                <font color="#00e5ff">IN A WEB BROWSER</font><br>
+                WITHOUT USE OF <br/>
+                <font color="#ff3a02">third party plugins</font></h1>
+                <aside class="notes">Can be defined as many things, but I like to say...</aside>
+            </section>
+            <section>
+                <h1 class="absolute-element fragment" style="font-size: 9em; position: absolute; width: 631px; height: 150px; z-index: 4; left: 172px; top: 133px;" data-fragment-index="0">
+                    <font color="#ff000c">no!</font>
+                </h1>
+                <div>
+                    <br>
+                </div>
+                <img src="images/flashLogo.png" style="height: 198px;">
+                <img src="images/java-logo.png" style="height: 207px;">
+                <div>
+                    <img src="images/Microsoft_Silverlight_logo.png" style="height: 189px;">
+                    <img src="images/Unity_Logo.png" style="height: 194px;">
+                    <span>&nbsp;</span>
+                    <br>
+                </div>
+                <aside class="notes">I'm not saying these are bad, just not needed for HTML5. They all CLOSED SOURCE, whereas HTML5 = Open Standards</aside>
+            </section>
+        </section>
+        <section  class="questionSlide">
+            <section>
+                <br>
+                <h1>Well gee,<br>what can I use?</h1>
+            </section>
+            <section>
+                <h2>
+                    <font style="font-size: 72px;">Your old pals...</font>
+                </h2>
+                <div>
+                    <img src="images/HTML5_Logo_512.png" style="height: 243px;">
+                    <img src="images/css3logo.png" style="height: 250px;">
+                    <img src="images/JavaScript-logo.png" style="height: 204px;">
+                    <br>
+                </div>
+                <h2 class="fragment" data-fragment-index="0">
+                    <span style="text-transform: uppercase;">
+                        <font style="font-size: 72px;">...with some new tricks</font>
+                    </span>
+                </h2>
+                <p class="fragment" data-fragment-index="1">
+                <span style="font-size: 24px;">
+                    <font color="#b3b3b3">
+                        localStorage • audio • video • device orientation • progress • regions • svg 
+                        <br>
+                        resize • media queries • 3D transforms • masks • gradients • file API
+                        <br>
+                        typed arrays • web SQL • notifications • full screen • mouse lock • offline
+                    </font>
+                </span>
+                </p>
+                <aside class="notes">A game can be simple DOM elements, images, and a little JS, like Checkers or Hearts.  Newer tech available in modern browsers allow more interesting techniques, such as 3d-ish effects and multimedia. Very new. Beyond scope of talk.</aside>
+            </section>
+            <section>
+                <h2>html5 &lt;canvas&gt;</h2>
+                <div>
+                    <br>
+                    <canvas id="canvasDemo1" width="500" height="500">
+                    </canvas>
+                    <div>
+                        <p>http://codepen.io/pixelgrid/pen/ECrKd<p>
+                    </div>
+                    <script>
+                        var   canvas = document.querySelector('#canvasDemo1'),
+                        ctx = canvas.getContext('2d'),
+                        particles = [],
+                        patriclesNum = 50,
+                        w = 500,
+                        h = 500,
+                        colors = ['#f35d4f','#f36849','#c0d988','#6ddaf1','#f1e85b'];
+
+                        canvas.width = 500;
+                        canvas.height = 500;
+                        canvas.style.left = (window.innerWidth - 500)/2+'px';
+
+                        if(window.innerHeight>500)
+                            canvas.style.top = (window.innerHeight - 500)/2+'px';
+
+                        function Factory(){  
+                            this.x =  Math.round( Math.random() * w);
+                            this.y =  Math.round( Math.random() * h);
+                            this.rad = Math.round( Math.random() * 1) + 1;
+                            this.rgba = colors[ Math.round( Math.random() * 3) ];
+                            this.vx = Math.round( Math.random() * 3) - 1.5;
+                            this.vy = Math.round( Math.random() * 3) - 1.5;
+                        }
+
+                        function draw(){
+                            ctx.clearRect(0, 0, w, h);
+                            ctx.globalCompositeOperation = 'lighter';
+                            for(var i = 0;i < patriclesNum; i++){
+                                var temp = particles[i];
+                                var factor = 1;
+
+                                for(var j = 0; j<patriclesNum; j++){
+
+                                    var temp2 = particles[j];
+                                    ctx.linewidth = 0.5;
+
+                                    if(temp.rgba == temp2.rgba && findDistance(temp, temp2)<50){
+                                        ctx.strokeStyle = temp.rgba;
+                                        ctx.beginPath();
+                                        ctx.moveTo(temp.x, temp.y);
+                                        ctx.lineTo(temp2.x, temp2.y);
+                                        ctx.stroke();
+                                        factor++;
+                                    }
+                                }
+
+
+                                ctx.fillStyle = temp.rgba;
+                                ctx.strokeStyle = temp.rgba;
+
+                                ctx.beginPath();
+                                ctx.arc(temp.x, temp.y, temp.rad*factor, 0, Math.PI*2, true);
+                                ctx.fill();
+                                ctx.closePath();
+
+                                ctx.beginPath();
+                                ctx.arc(temp.x, temp.y, (temp.rad+5)*factor, 0, Math.PI*2, true);
+                                ctx.stroke();
+                                ctx.closePath();
+
+                                temp.x += temp.vx;
+                                temp.y += temp.vy;
+
+                                if(temp.x > w)temp.x = 0;
+                                if(temp.x < 0)temp.x = w;
+                                if(temp.y > h)temp.y = 0;
+                                if(temp.y < 0)temp.y = h;
+                            }
+                        }
+
+                        function findDistance(p1,p2){  
+                            return Math.sqrt( Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2) );
+                        }
+
+                        window.requestAnimFrame = (function(){
+                            return  window.requestAnimationFrame       ||
+                                window.webkitRequestAnimationFrame ||
+                                window.mozRequestAnimationFrame    ||
+                                function( callback ){
+                                window.setTimeout(callback, 1000 / 60);
+                            };
+                        })();
+
+                        (function init(){
+                            for(var i = 0; i < patriclesNum; i++){
+                                particles.push(new Factory);
+                            }
+                        })();
+
+                        (function loop(){
+                            draw();
+                            requestAnimFrame(loop);
+                        })();
+                    </script>
+                </div>
+                <aside class="notes">Complex animation and interaction is ideal for canvas. Similar to Flash STAGE. Define a region, use JS Drawing API</aside>
+            </section>
+            <section>
+                <h2>WEB GL</h2>
+                <img src="images/webglsample.png" style="height:480px"/>
+                <div><p>http://workshop.chromeexperiments.com/stars/</p></div>
+                <aside class="notes">WebGL renders with help of GFX card, uses GL ES 2 API. Lots of awesome demos out there from Google and Moz.  COMPUTER not powerful enough. FOCUS on 2D.</aside>
+            </section>
+        </section>
+        <section  class="questionSlide">
+            <section>
+                <h1>Awesome!</h1>
+                <h1>
+                    <br>Why isn't everyone<br>doing this?
+                </h1>
+            </section>
+            <section>
+                <h2>Well...</h2>
+                <div>
+                    <img src="images/basics.L.jpg" style="height: 481px;">
+                    <br>
+                </div>
+                <div>
+                    <font style="font-size: 18px;" color="#9b9b9b">Image via Matt Collins and the <a href="http://www.nytimes.com/2009/03/26/technology/personaltech/26basics.html?_r=0">New York Times</a>
+                    </font>
+                </div>
+                <aside class="notes">Browsers don't always get along. VENDORS take time adopting standards. WHAT WORKS IN ONE may not work other.</aside>
+            </section>
+            <section>
+                <h2>performance can be an issue</h2>
+                <div>
+                    <img src="images/gauge.png" style="height: 473px;">
+                    <br>
+                </div>
+                <aside class="notes">DESKTOPS no like WebGL. Mobile tough always.</aside>
+            </section>
+            <section>
+                <h2>monetization?</h2>
+                <img src="images/showmethemoney.png" style="height: 496px;">
+                <aside class="notes">FLASH/UNITY have sponsorships, portals, in game ads. Not much of this for HTML5 yet.</aside>
+            </section>
+        </section>
+        <section>
+            <section  class="questionSlide">
+                <h1>omg!<br>
+                    <br>
+                    wtf? <br>
+                    <br>
+                    THxbutnothx
+                </h1>
+                <aside class="notes">Some might see this as a problem</aside>
+            </section>
+            <section>
+                <h2>Hold on a sec...</h2>
+                <div>
+                    <br>
+                </div>
+                <h3>With a little effort&nbsp;</h3>
+                <h3>and some neat tools, you can:</h3>
+                <div>
+                    <br>
+                </div>
+                <div>
+                    <ol>
+                        <font style="font-size: 42px;">
+                            <li class="fragment" data-fragment-index="0">Get native performance<br>
+                            <br>
+                            </li>
+                            <li class="fragment" data-fragment-index="1">Release in app stores<br>
+                            <br>
+                            </li>
+                            <li class="fragment" data-fragment-index="2">Profit!*</li>
+                        </font>
+                    </ol>
+                </div>
+                <div class="fragment">
+                    <br>
+                    <h6>*Profit not guaranteed.</h6>
+                </div>
+            </section>
+            <section>
+                <font style="font-size: 42px;">Through black magic and dark wizardry...</font>
+                </p>
+                <div>
+                    <br>
+                </div>
+                <img src="images/cocoonjs.png" style="">
+                <img src="images/ejecta.png" style="height: 190px;">
+                <img src="images/open.png" style="height: 192px;">
+                <br>
+                <div>
+                    <br>
+                </div>
+                <div>
+                    <font style="font-size: 42px;">... your &lt;canvas&gt; games become&nbsp;</font>
+                </div>
+                <div>
+                    <font style="font-size: 42px;">accelerated mobile apps.</font>
+                </div>
+                <aside class="notes">HOW TO DO? There are NEW TOOLS.</aside>
+            </section>
+            <section>
+                <p>
+                <br>
+                </p>
+                <p>
+                <font style="font-size: 42px;">Plus, all the cool kids are using&nbsp;</font>
+                </p>
+                <p>
+                <font style="font-size: 42px;">HTML5 for apps and games now.</font>
+                </p>
+                <p>
+                <br>
+                </p>
+                <p>
+                    <img src="images/Tizen_Logo.png" style="height: 190px;">&nbsp;
+                    <img src="images/FirefoxOS-logo_610x385.png" style="height: 209px;">
+                    <img src="images/windows-8-logo-large2.png" style="height: 194px;">
+                <br>
+                </p>
+                <aside class="notes">OPERATING SYSTEMS use HTML+JS as native platform code. Use platform SDK for apps.</aside>                
+            </section>
+        </section>
+        <section>
+            <section  class="questionSlide">
+                <h1>Ok, I'm convinced.<br>
+                <br>so how do I get started?</h1>
+                <aside class="notes">Hopefully you are not scared, but want to try.</aside>
+            </section>
+            <section>
+                <h2>html5 game engines!</h2>
+                <div>
+                    <br>
+                </div>
+                <h3>Free, open source, and javascript:</h3>
+                <div>
+                    <ul>
+                        <li>Crafty</li>
+                        <li>LimeJS</li>
+                        <li>Starling.js</li>
+                        <li>CreateJS (EaselJS)</li>
+                        <li>Cocos2D-html5</li>
+                        <li>RPG.js</li>
+                        <li>Isogenic</li>
+                        <li>Many more....</li>
+                    </ul>
+                    <br>
+                </div>
+                <div>
+                    <a href="https://github.com/bebraw/jswiki/wiki/Game-Engines">
+                        https://github.com/bebraw/jswiki/wiki/Game-Engines</a>
+                    <br>
+                </div>
+                <aside class="notes">Lots of free 2D engins. Some adapted from other tech. 
+                    Specific engines for RPG, isometric. Check wiki, new engines all the time.</aside>
+            </section>
+            <section>
+                <h2>Some new hotness:</h2>
+                <h1>
+                    <font>
+                        <span style="font-size: 76.41661834716797px; height: 110px;">
+                            <img src="images/photonstorm.png" style="height: 113px;">
+                        </span>
+                        <font style="font-size: 112px;">&nbsp;</font>
+                    </font>
+                    <font style="font-size: 112px;">phaser</font>
+                </h1>
+                <p>
+                <img src="images/gclogo-text.png" style="font-size: 72px; height: 99px;">
+                <br>
+                </p>
+                <div>
+                    <font style="font-size: 72px;">
+                        <img src="images/tz-wordmark.png" style="width: 415px;">
+                        <br>
+                    </font>
+                </div>
+            </section>
+            <section>
+                <h2>or pay some $$$ to get fancy</h2>
+                <div>
+                    <img src="images/construct2.jpg" style="height: 235px;">
+                    <br>
+                </div>
+                <div>
+                    <img src="images/impactjs.jpg" style="height: 252px;">
+                    <br>
+                </div>
+            </section>
+            <section>
+                <h2>look at some code</h2>
+                <div>
+                    <br>
+                </div>
+                <div>
+                    <img src="images/breakouts.jpg" style="height: 338px;">
+                    <br>
+                </div>
+                <div>
+                    <a href="http://city41.github.io/breakouts/">http://city41.github.io/breakouts/</a>
+                    <br>
+                </div>
+                <aside class="notes">FOR Some good code examples... LIKE TODOMVC. Has 6 or 8 examples so far.</aside>
+            </section>
+            <section>
+                <h2>grab some libs, do whatever</h2>
+                <div>
+                    <br>
+                </div>
+                <div>
+                    <ul>
+                        <li>
+                        <b>INPUT</b>: Hammer.js, Mousetrap<br>
+                        <br>
+                        </li>
+                        <li>
+                        <b>SOUND</b>: Howler.js, Buzz<br>
+                        <br>
+                        </li>
+                        <li>
+                        <b>SPRITES</b>: Spritely<br>
+                        <br>
+                        </li>
+                        <li>
+                        <b>ANIMATION</b>: GSAP, TweenJS<br>
+                        <br>
+                        </li>
+                        <li>
+                        <b>VECTOR GFX</b>: Paper, Raphael</li>
+                    </ul>
+                    <div style="text-align: left;">
+                        <br>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <span style="font-size: 35.80729293823242px; font-style: normal; font-variant: normal;">http://jster.com</span>
+                </div>
+                <aside class="notes">FOR A QUICK FIX just slap together a few libs and some HTML.</aside>
+            </section>
+        </section>
+        <section>
+            <section  class="questionSlide">
+                <h1>ok, but where do i get
+                    <span style="color:blue"> ideas</span> and <span style="color:green">graphics</span> and
+                            <span style="color:orange">sounds</span> and stuff?
+                </h1>
+            </section>
+            <section>
+                <h2>ideas</h2>
+                <div>
+                    <br>
+                </div>
+                <h3>Read a book (or a magazine)</h3>
+                <p>
+                </p>
+                <ul>
+                    <li><span style="text-decoration:underline">The Art of Game Design: A Book of Lenses</span> by Jesse Schell</li>
+                    <li><span style="text-decoration:underline">A Theory of Fun for Game Design</span> by Raph Koster</li>
+                    <li>Kill Screen Magazine (and blog)</li>
+                </ul>
+                <div>
+                    <br>
+                </div>
+                <h3>Play some games</h3>
+                <p>
+                </p>
+                <ul>
+                    <li>
+                    <a href="http://www.kongregate.com/html5-games">Kongregate HTML5</a>
+                    </li>
+                    <li>Newgrounds</li>
+                    <li>HTML5Games.com</li>
+                </ul>
+            </section>
+            <section>
+                <h2>graphics</h2>
+                <div>
+                    <br>
+                </div>
+                <div>
+                    <ul>
+                        <li>
+                        <a href="http://www.pixelprospector.com/the-big-list-of-royalty-free-graphics/">Big List of Royalty Free Graphics</a>
+                        </li>
+                        <li>
+                        <span>Hire an Artist</span>
+                        <br>
+                        </li>
+                        <ul>
+                            <li>
+                            <a href="http://www.pixeljoint.com/forum/forum_topics.asp?FID=20">PixelJoint</a>
+                            </li>
+                            <li>
+                            <a href="deviantart.com">DeviantArt</a>
+                            </li>
+                            <li>Elance, Guru, oDesk, etc...</li>
+                        </ul>
+                        <li>
+                        <span>Make Your Own</span>
+                        <br>
+                        </li>
+                        <ul>
+                            <li>
+                            <span>
+                                <a href="http://www.humanbalance.net/gale/us/">GraphicsGale</a>
+                            </span>
+                            </li>
+                            <li>
+                            <a href="http://piq.codeus.net/draw">Piq</a>
+                            </li>
+                            <li>Use an iPad</li>
+                        </ul>
+                    </ul>
+                </div>
+            </section>
+            <section>
+                <h2>sounds and music</h2>
+                <p>
+                </p>
+                <ul>
+                    <li>
+                    <a href="http://www.pixelprospector.com/the-big-list-of-royalty-free-music-and-sounds-free-edition/">Big List of Royalty Free Music and SFX</a>
+                    </li>
+                    <li>
+                    <a href="http://www.bfxr.net/">bFXR / sFXR</a>
+                    </li>
+                </ul>
+                <div style="text-align: center;">
+                    <img src="images/bfxr.jpg" style="height: 430px;">
+                    <br>
+                </div>
+            </section>
+        </section>
+        <section>
+            <section  class="questionSlide">
+                <h1>so exciting!<br />
+                    But how do I stay excited after this slide show?
+                </h1>
+            </section>
+            <section>
+                <h2>join a competition or game jam</h2>
+                <div>
+                    <img src="images/ludumdare.jpg" style="">
+                    <br>
+                </div>
+                <div>
+                    <img src="images/1gam.png" style="">
+                    <br>
+                </div>
+                <blockquote>
+                    <font style="font-size: 72px;" color="#fff700">CompoHub.com</font>
+                </blockquote>
+            </section>
+            <section>
+                <h2>
+                    <font color="#28ff00">$</font> do it for the money <font color="#28ff00">$</font>        
+                </h2>
+                <h1 class="fragment" data-fragment-index="0">just kidding!<br>
+                    <img src="images/meme-history-yao-ming.jpg" style="height: 308px;">
+                    <br>
+                </h1>
+                <h3 class="fragment" data-fragment-index="1">
+                    <span>
+                        <font style="font-size: 32px;">You probably won't make any money.</font>
+                    </span>
+                </h3>
+            </section>
+            <section>
+                <h2>impress your friends and family</h2>
+                <img src="images/bogstras.jpg" style="height: 507px;">
+            </section>
+            <section>
+                <h2>Demo time?</h2>
+            </section>
+        </section>
+        <section>
+            <h1>thanks!</h1>
+            <div>Eric Terpstra</div>
+            <div>www.ericterpstra.com</div>
+            <div>@eterps</div>
+        </section>
+    </div>
+</div>
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.min.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+    transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+    // Optional libraries used to extend on reveal.js
+    dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+        { src: 'socket.io/socket.io.js', async: true },
+        { src: 'plugin/notes-server/client.js', async: true }
+        // { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+        // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+    ]
+});
+</script>
+</body>
+</html>
